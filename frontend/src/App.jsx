@@ -41,6 +41,8 @@ function App() {
             element={
               <ProtectedRoute>
                 <Navbar />
+                
+                
                 <ProjectDetails />
               </ProtectedRoute>
             }
@@ -59,7 +61,7 @@ function App() {
 
           />
            <Route
-            path="/tasks"
+            path="/projects/:projectId/tasks"
             element={
               <ProtectedRoute>
                 <Navbar />

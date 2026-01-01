@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
+import { PrismaClient } from "@prisma/client";
 
 // Middlewares
 import authMiddleware from './middlewares/auth.middleware.js';
@@ -17,7 +18,7 @@ import projectRoutes from './routes/project.routes.js';
 import taskRoutes from "./routes/task.routes.js";
 
 const app = express();
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: ["http://frontend:3000","http://localhost:3000"], credentials: true }));
 app.use(morgan('dev'));
 
 
@@ -28,7 +29,26 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Health check
-app.get('/health', (req, res) => res.status(200).json({ success: true, status: 'ok' }));
+
+const prisma = new PrismaClient();
+
+app.get("/health", async (req, res) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+
+    res.status(200).json({
+      status: "ok",
+      database: "connected",
+      timestamp: new Date().toISOString()
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      database: "disconnected",
+      timestamp: new Date().toISOString()
+    });
+  }
+});
 
 // PUBLIC routes
 app.use('/api/auth', authRoutes);
@@ -41,6 +61,9 @@ app.use(
     // Ensures tenant exists and user belongs
  userRoutes
 );
+app.use('/api', authMiddleware, userRoutes);
+app.use('/api', authMiddleware, userRoutes);
+app.use('/api/tenants', authMiddleware, tenantRoutes);
 app.use(
   '/api/users',
   authMiddleware,

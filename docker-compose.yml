@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # ===============================
+  # POSTGRES DATABASE
+  # ===============================
+  database:
+    image: postgres:15
+    container_name: database
+    environment:
+      POSTGRES_DB: saas_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"  # external:internal
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ===============================
+  # BACKEND SERVICE
+  # ===============================
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@database:5432/saas_db
+      JWT_SECRET: dev_jwt_secret_key_123
+      FRONTEND_URL: http://frontend:3000
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ===============================
+  # FRONTEND SERVICE
+  # ===============================
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_API_URL: http://backend:5000
+    depends_on:
+      backend:
+        condition: service_healthy
+
+# ===============================
+# VOLUMES
+# ===============================
+volumes:
+  db_data:

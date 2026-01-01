@@ -6,7 +6,9 @@ const Tenants = () => {
 
   const loadTenants = async () => {
     const res = await api.get("/api/tenants");
-    setTenants(res.data.data || []);
+
+    // ✅ correct array access
+    setTenants(res.data.data.tenants || []);
   };
 
   useEffect(() => {
@@ -17,14 +19,14 @@ const Tenants = () => {
     <div className="page">
       <div className="page-header">
         <h2>Tenants</h2>
-        <button>Add Tenant</button>
+       
       </div>
 
       <table className="table">
         <thead>
           <tr>
             <th>Name</th>
-            <th>Domain</th>
+            <th>Subdomain</th>
             <th>Status</th>
             <th>Created</th>
           </tr>
@@ -33,10 +35,10 @@ const Tenants = () => {
         <tbody>
           {tenants.map((t) => (
             <tr key={t.id}>
-              <td>{t.name}</td>
-              <td>{t.domain}</td>
-              <td>{t.active ? "Active" : "Inactive"}</td>
-              <td>{t.created_at?.slice(0, 10)}</td>
+              <td>{t.name || "-"}</td>
+              <td>{t.subdomain || "-"}</td>
+              <td>{t.status}</td>
+              <td>{t.createdAt?.slice(0, 10)}</td>
             </tr>
           ))}
         </tbody>

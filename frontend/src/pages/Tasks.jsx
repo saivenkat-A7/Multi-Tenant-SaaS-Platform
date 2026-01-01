@@ -1,9 +1,11 @@
 import { useEffect, useState, useContext } from "react";
+import { useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import api from "../services/api";
 
 const Tasks = () => {
   const { authData } = useContext(AuthContext);
+  const { projectId } = useParams(); // ✅ get projectId from route
   const userId = authData?.user?.id;
 
   const [tasks, setTasks] = useState([]);
@@ -14,37 +16,23 @@ const Tasks = () => {
     try {
       setLoading(true);
 
-      // 1️⃣ Get all projects for tenant
-      const projectsRes = await api.get(`/api/tenants/${authData.user.tenant.id}/projects`);
-      const projects = projectsRes.data?.data || [];
+      // ✅ Dynamic projectId
+      const res = await api.get(`/api/projects/${projectId}/tasks`);
 
-      // Create a map for projectId → projectName
-      const projectMap = {};
-      projects.forEach(p => {
-        projectMap[p.id] = p.name;
-      });
+      let allTasks = res.data?.data?.tasks || [];
 
-      let allTasks = [];
-
-      // 2️⃣ Fetch tasks for each project
-      for (const project of projects) {
-        const res = await api.get(`/api/projects/${project.id}/tasks`);
-        const projectTasks = res.data?.data?.tasks || [];
-        allTasks = allTasks.concat(projectTasks);
-      }
-
-      // 3️⃣ Filter tasks assigned to logged-in user
+      // ✅ Filter tasks assigned to logged-in user
       let myTasks = allTasks.filter(t => t.assigned_to === userId);
 
-      // 4️⃣ Filter by status
+      // ✅ Filter by status
       if (statusFilter !== "all") {
         myTasks = myTasks.filter(t => t.status === statusFilter);
       }
 
-      // 5️⃣ Attach projectName to each task
+      // ✅ Attach project name (optional / static)
       myTasks = myTasks.map(t => ({
         ...t,
-        projectName: projectMap[t.project_id] || "Unknown Project"
+        projectName: "Project"
       }));
 
       setTasks(myTasks);
@@ -57,8 +45,8 @@ const Tasks = () => {
   };
 
   useEffect(() => {
-    if (userId) loadTasks();
-  }, [userId, statusFilter]);
+    if (userId && projectId) loadTasks();
+  }, [userId, projectId, statusFilter]);
 
   if (loading) return <p className="page">Loading tasks...</p>;
 
@@ -66,7 +54,10 @@ const Tasks = () => {
     <div className="page">
       <h2>My Tasks</h2>
 
-      <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
+      <select
+        value={statusFilter}
+        onChange={e => setStatusFilter(e.target.value)}
+      >
         <option value="all">All</option>
         <option value="todo">Todo</option>
         <option value="in_progress">In Progress</option>
@@ -93,7 +84,7 @@ const Tasks = () => {
                 <td>{t.projectName}</td>
                 <td>{t.status}</td>
                 <td>{t.priority}</td>
-                <td>{t.due_date?.slice(0, 10) || "N/A"}</td>
+                <td>{t.due_date?.slice(0, 10)} || "N/A"</td>
               </tr>
             ))}
           </tbody>

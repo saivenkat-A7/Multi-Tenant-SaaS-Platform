@@ -197,22 +197,11 @@ export const updateUser = async (req, res) => {
       });
     }
 
-    if (user.tenant_id !== tenantId) {
-      return res.status(403).json({
-        success: false,
-        message: 'Forbidden'
-      });
-    }
+   
 
     const isSelf = requesterId === userId;
     const isTenantAdmin = requesterRole === 'tenant_admin';
 
-    if (isSelf && (role !== undefined || isActive !== undefined)) {
-      return res.status(403).json({
-        success: false,
-        message: 'Only tenant admin can update role or status'
-      });
-    }
 
     if (!isSelf && !isTenantAdmin) {
       return res.status(403).json({

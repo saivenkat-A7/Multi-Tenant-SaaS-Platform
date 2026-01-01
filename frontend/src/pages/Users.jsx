@@ -5,7 +5,9 @@ import UserModal from "../components/UserModal";
 
 const Users = () => {
   const { authData } = useContext(AuthContext);
-  const tenantId = authData?.tenant?.id;
+
+  // ✅ FIX 1: correct tenantId path
+  const tenantId = authData?.user?.tenant?.id;
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,6 +17,8 @@ const Users = () => {
   const [editingUser, setEditingUser] = useState(null);
 
   const loadUsers = async () => {
+    if (!tenantId) return;
+
     setLoading(true);
     const res = await api.get(`/api/tenants/${tenantId}/users`);
     setUsers(res.data?.data || []);
@@ -23,7 +27,7 @@ const Users = () => {
 
   useEffect(() => {
     loadUsers();
-  }, []);
+  }, [tenantId]);
 
   const deleteUser = async (id) => {
     if (!window.confirm("Delete user?")) return;
@@ -33,7 +37,7 @@ const Users = () => {
 
   const filteredUsers = users.filter((u) => {
     const matchesSearch =
-      u.full_name.toLowerCase().includes(search.toLowerCase()) ||
+      u.fullName.toLowerCase().includes(search.toLowerCase()) ||
       u.email.toLowerCase().includes(search.toLowerCase());
 
     const matchesRole = roleFilter ? u.role === roleFilter : true;
@@ -84,15 +88,15 @@ const Users = () => {
           <tbody>
             {filteredUsers.map((u) => (
               <tr key={u.id}>
-                <td>{u.full_name}</td>
+                <td>{u.fullName}</td>
                 <td>{u.email}</td>
                 <td>
                   <span className={`badge ${u.role}`}>
                     {u.role}
                   </span>
                 </td>
-                <td>{u.active ? "Active" : "Inactive"}</td>
-                <td>{new Date(u.created_at).toLocaleDateString()}</td>
+                <td>{u.isActive ? "Active" : "Inactive"}</td>
+                <td>{new Date(u.createdAt).toLocaleDateString()}</td>
                 <td className="actions">
                   <button onClick={() => { setEditingUser(u); setModalOpen(true); }}>
                     Edit

@@ -6,14 +6,14 @@ const UserModal = ({ user, tenantId, onClose, onSaved }) => {
 
   const [form, setForm] = useState({
     email: user?.email || "",
-    full_name: user?.full_name || "",
+    fullName: user?.fullName || "",
     password: "",
     role: user?.role || "user",
-    active: user?.active ?? true
+    isActive: user?.isActive ?? true
   });
 
   const submit = async () => {
-    if (!form.email || !form.full_name) {
+    if (!form.email || !form.fullName) {
       alert("Email and Full Name required");
       return;
     }
@@ -46,8 +46,8 @@ const UserModal = ({ user, tenantId, onClose, onSaved }) => {
 
         <input
           placeholder="Full Name"
-          value={form.full_name}
-          onChange={(e) => setForm({ ...form, full_name: e.target.value })}
+          value={form.fullName}
+          onChange={(e) => setForm({ ...form, fullName: e.target.value })}
         />
 
         <input
@@ -68,8 +68,8 @@ const UserModal = ({ user, tenantId, onClose, onSaved }) => {
         <label className="checkbox">
           <input
             type="checkbox"
-            checked={form.active}
-            onChange={(e) => setForm({ ...form, active: e.target.checked })}
+            checked={form.isActive}
+            onChange={(e) => setForm({ ...form, isActive: e.target.checked })}
           />
           Active
         </label>
