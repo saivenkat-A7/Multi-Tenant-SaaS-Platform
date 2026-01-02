@@ -1,6 +1,6 @@
 # Multi-Tenant SaaS Project & Task Manager
 
-A production-ready **multi-tenant SaaS task management platform** built with Node.js, PostgreSQL, React, and Docker. 
+A production-ready **multi-tenant SaaS task management platform** built with Node.js, PostgreSQL, React, and Docker.
 The system supports tenant isolation, role-based access control, automatic database initialization, and containerized deployment for evaluation.
   
 **Target Audience:**  
