@@ -97,7 +97,7 @@ This application follows a **three-tier architecture**:
 ###  Clone Repository
 ```bash
 git clone <your-repo-url>
-cd multi-tenant-saas-project-task-manager
+
 ````
 
 ---
