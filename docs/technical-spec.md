@@ -1,5 +1,5 @@
 # Technical Specification
-
+ 
 ## Backend Structure
 - controllers: API logic
 - routes: API endpoints
