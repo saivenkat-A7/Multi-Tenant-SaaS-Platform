@@ -2,7 +2,7 @@
 
 A production-ready **multi-tenant SaaS task management platform** built with Node.js, PostgreSQL, React, and Docker. 
 The system supports tenant isolation, role-based access control, automatic database initialization, and containerized deployment for evaluation.
- 
+  
 **Target Audience:**  
 Students, developers, and evaluators reviewing multi-tenant backend architecture, Dockerized deployments, and role-based SaaS systems.
 
