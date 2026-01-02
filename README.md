@@ -108,18 +108,28 @@ Create `.env` inside the **backend root**:
 
 ```env
 DB_HOST=database
-DB_PORT=5432
-DB_NAME=multi_tenant_saas
-DB_USER=postgres
-DB_PASSWORD=postgres
 
-JWT_SECRET=dev_secret_key_min_32_chars_long
+
+
+NODE_ENV=development
+PORT=5000
+
+
+DATABASE_URL="postgresql://postgres:postgres@database:5432/saas_db"
+
+
+
+
+JWT_SECRET=dev_jwt_secret_key_123
 JWT_EXPIRES_IN=24h
 
-PORT=5000
-NODE_ENV=development
 
-FRONTEND_URL=http://localhost:3000
+
+CORS_ORIGIN=http://frontend:3000
+
+
+LOG_LEVEL=debug
+
 ```
 
 
@@ -128,7 +138,7 @@ FRONTEND_URL=http://localhost:3000
 ###  Start Application (MANDATORY)
 
 ```bash
-docker-compose up -d --build
+docker-compose up -d
 ```
 
 This single command will:
