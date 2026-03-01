@@ -1,4 +1,4 @@
-# 🚀 Multi-Tenant SaaS Platform
+<img width="3224" height="5263" alt="database-erd" src="https://github.com/user-attachments/assets/2a9d47bb-1933-43db-a5ea-b1c666e8b48d" />#  Multi-Tenant SaaS Platform
 
 > **A production-ready, containerized Project & Task Management System built with a strict Multi-Tenant Architecture.**
 
@@ -7,7 +7,7 @@ This application is a full-stack SaaS platform designed for organizations to man
 
 
 
-## 🌟 Key Features
+##  Key Features
 
 1.  **Strict Tenant Isolation**
     * Implements "Shared Database, Shared Schema" architecture.
@@ -73,6 +73,11 @@ The system follows a **Three-Tier Architecture**:
 1.  **Presentation Layer (Frontend):** React SPA running on port `3000`.
 2.  **Application Layer (Backend):** Express REST API running on port `5000`.
 3.  **Data Layer (Database):** PostgreSQL running on port `5432`.
+   <img width="3224" height="5263" alt="database-erd" src="https://github.com/user-attachments/assets/8db05b26-0167-42da-b5e7-2374e6ed159f" />
+
+   <img width="5406" height="528" alt="system-architecture" src="https://github.com/user-attachments/assets/fbd88e22-7388-4110-9962-5248e435de05" />
+
+
 
 *(See `docs/architecture.md` for the detailed system diagram)*
 
