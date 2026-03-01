@@ -1,4 +1,4 @@
-<img width="3224" height="5263" alt="database-erd" src="https://github.com/user-attachments/assets/2a9d47bb-1933-43db-a5ea-b1c666e8b48d" />#  Multi-Tenant SaaS Platform
+#  Multi-Tenant SaaS Platform
 
 > **A production-ready, containerized Project & Task Management System built with a strict Multi-Tenant Architecture.**
 
