@@ -7,9 +7,7 @@ export default defineConfig({
   server: {
     host: true,
     port: 3000,
-    allowedHosts: [
-      "multi-tenant-saas-platform-2-jg8g.onrender.com"
-    ],
+    allowedHosts: 'all',
     watch: {
       usePolling: true
     }
